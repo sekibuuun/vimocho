@@ -1,0 +1,12 @@
+pre-push:
+  commands:
+    biome:
+      glob: "src/**/*.{js,ts,jsx,tsx}"
+      run: npx @biomejs/biome check --write {staged_files}
+
+pre-commit:
+  parallel: true
+  commands:
+    biome:
+      glob: "src/**/*.{js,ts,jsx,tsx}"
+      run: npx @biomejs/biome check --write {staged_files}

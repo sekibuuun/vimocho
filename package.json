@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "biome lint --write ./src/**/*",
+    "format": "biome format ./src/**/* --write",
+    "check": "biome check --write ./src/**/*",
     "pages:build": "npx @cloudflare/next-on-pages",
     "pages:dev": "wrangler pages dev",
     "preview": "npm run pages:build && wrangler pages dev",
@@ -21,6 +23,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@cloudflare/next-on-pages": "^1.13.5",
     "@cloudflare/workers-types": "^4.20241112.0",
     "@types/node": "^20",
