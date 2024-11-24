@@ -40,7 +40,11 @@
         "noUnusedVariables": "error"
       },
       "style": {
-        "useSelfClosingElements": "warn"
+        "useSelfClosingElements": "warn",
+        "noUnusedTemplateLiteral": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
       }
     }
   },
