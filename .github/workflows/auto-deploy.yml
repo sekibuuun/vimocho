@@ -6,10 +6,24 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy
     steps:
-      - uses: actions/checkout@v3
-      - name: Deploy
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18  # Next.jsに適したバージョンを指定
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install @cloudflare/next-on-pages
+
+      - name: Build
+        run: npx @cloudflare/next-on-pages
+
+      - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
