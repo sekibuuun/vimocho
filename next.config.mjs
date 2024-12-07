@@ -8,6 +8,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  distDir: 'build',
+};
 
 export default nextConfig;
