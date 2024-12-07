@@ -1,26 +1,21 @@
-name: Deploy
+name: Deploy to Cloudflare
+
 on:
   push:
     branches:
       - main
+
 jobs:
   deploy:
-    name: Deploy
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: Build
-        run: npx @cloudflare/next-on-pages@1
-      - name: Deploy
-        id: cloudflare_pages_deploy
+      - uses: actions/checkout@v4
+      - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
-          accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: pages deploy ./.next/server --project-name=vimocho --commit-dirty=true
+          accountID: ${{ secrets.CF_ACCOUNT_ID }}
+          secrets: |
+            database_id
+          env:
+            database_id: ${{ secrets.D1_DATABASE_ID }}
