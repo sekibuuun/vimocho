@@ -37,4 +37,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: pages deploy .vercel/output/static --project-name=vimocho
+          command: pages deploy
