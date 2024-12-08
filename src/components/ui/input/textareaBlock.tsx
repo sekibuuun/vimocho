@@ -9,7 +9,7 @@ export const TextareaBlock: React.FC<{
   setTextareaRef: (element: HTMLTextAreaElement | null, blockId: string) => void
 }> = ({ block, onBlockClick, onKeyDown, onChange, setTextareaRef }) => (
   <div
-    className="min-h-[2rem] p-2 rounded hover:bg-gray-50 cursor-text mb-1"
+    className="min-h-[1rem] p-1 rounded cursor-text"
     onClick={() => onBlockClick(block.id)}
   >
     <textarea
