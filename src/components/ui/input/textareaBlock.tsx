@@ -19,27 +19,25 @@ export const TextareaBlock: React.FC<{
   isFocused,
   handleFocus,
   handleBlur
-}) => {
-  return (
-    <div
-      className="min-h-[1rem] p-1 rounded cursor-text"
-      onClick={() => onBlockClick(block.id)}
-    >
-      <textarea
-        ref={(el) => setTextareaRef(el, block.id)}
-        className="w-full resize-none outline-none bg-transparent py-1"
-        value={block.content}
-        onChange={(e) => onChange(e, block.id)}
-        onFocus={() => handleFocus(block.id)}
-        onBlur={() => handleBlur(block.id)}
-        onKeyDown={(e) => onKeyDown(e, block.id)}
-        placeholder={`${!isFocused ? "" : "文字を入力するか、「/」でコマンドを呼び出します..."}`}
-        rows={1}
-        style={{
-          overflow: "hidden",
-          lineHeight: "1.5"
-        }}
-      />
-    </div>
-  )
-}
+}) => (
+  <div
+    className="min-h-[1rem] p-1 rounded cursor-text"
+    onClick={() => onBlockClick(block.id)}
+  >
+    <textarea
+      ref={(el) => setTextareaRef(el, block.id)}
+      className="w-full resize-none outline-none bg-transparent py-1 overflow-hidden leading-normal"
+      value={block.content}
+      onChange={(e) => onChange(e, block.id)}
+      onFocus={() => handleFocus(block.id)}
+      onBlur={() => handleBlur(block.id)}
+      onKeyDown={(e) => onKeyDown(e, block.id)}
+      placeholder={`${!isFocused ? "" : "文字を入力するか、「/」でコマンドを呼び出します..."}`}
+      rows={1}
+      style={{
+        overflow: "hidden",
+        lineHeight: "1.5"
+      }}
+    />
+  </div>
+)

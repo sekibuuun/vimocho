@@ -31,7 +31,9 @@ export const useBlocks = (
   const handleFocus = (blockId: string) => {
     setBlocks((prev) =>
       prev.map((block) =>
-        block.id === blockId ? { ...block, isFocused: true } : block
+        block.id === blockId
+          ? { ...block, isFocused: true }
+          : { ...block, isFocused: false }
       )
     )
   }

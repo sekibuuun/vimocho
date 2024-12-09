@@ -10,7 +10,7 @@ import type { ChangeEvent, KeyboardEvent } from "react"
 export const Input: React.FC = () => {
   const { blocks, addBlock, updateBlockContent, handleFocus, handleBlur } =
     useBlocks()
-  const { setRef, focusTextarea } = useTextareaRefs()
+  const { setTextareaRef, focusTextarea } = useTextareaRefs()
 
   const handleBlockClick = (blockId: string) => {
     focusTextarea(blockId)
@@ -25,7 +25,7 @@ export const Input: React.FC = () => {
       const newBlock = addBlock(blockId)
 
       // 新しいブロックにフォーカスを移動
-      setTimeout(() => focusTextarea(newBlock.id), 0)
+      requestAnimationFrame(() => focusTextarea(newBlock.id))
     }
   }
 
@@ -46,7 +46,7 @@ export const Input: React.FC = () => {
           onBlockClick={handleBlockClick}
           onKeyDown={handleKeyDown}
           onChange={handleChange}
-          setTextareaRef={setRef}
+          setTextareaRef={setTextareaRef}
           isFocused={block.isFocused}
           handleFocus={() => handleFocus(block.id)}
           handleBlur={() => handleBlur(block.id)}

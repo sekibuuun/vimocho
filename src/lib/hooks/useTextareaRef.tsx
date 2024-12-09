@@ -5,7 +5,14 @@ import { useRef } from "react"
 export const useTextareaRefs = () => {
   const refs = useRef<{ [key: string]: HTMLTextAreaElement | null }>({})
 
-  const setRef = (element: HTMLTextAreaElement | null, blockId: string) => {
+  const setTextareaRef = (
+    element: HTMLTextAreaElement | null,
+    blockId: string
+  ) => {
+    if (!element) {
+      delete refs.current[blockId]
+      return
+    }
     refs.current[blockId] = element
   }
 
@@ -17,7 +24,7 @@ export const useTextareaRefs = () => {
   }
 
   return {
-    setRef,
+    setTextareaRef,
     focusTextarea
   }
 }
