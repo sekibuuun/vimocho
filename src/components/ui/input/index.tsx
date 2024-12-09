@@ -37,7 +37,7 @@ export const Input: React.FC = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-8">
+    <div className="max-w-2xl mx-2">
       {blocks.map((block) => (
         <TextareaBlock
           key={block.id}
