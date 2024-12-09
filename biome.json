@@ -37,7 +37,8 @@
       },
       "correctness": {
         "useHookAtTopLevel": "off",
-        "noUnusedVariables": "error"
+        "noUnusedVariables": "error",
+        "noUnusedImports": "error"
       },
       "style": {
         "useSelfClosingElements": "warn",
