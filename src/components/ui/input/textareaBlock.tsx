@@ -1,6 +1,6 @@
 import type { Block } from "@/types/type"
 import type React from "react"
-import { type ChangeEvent, type KeyboardEvent, useState } from "react"
+import type { ChangeEvent, KeyboardEvent } from "react"
 export const TextareaBlock: React.FC<{
   block: Block
   onBlockClick: (blockId: string) => void
