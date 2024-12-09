@@ -16,11 +16,13 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts"
   },
   "dependencies": {
+    "babel-plugin-react-compiler": "^19.0.0-beta-37ed2a7-20241206",
     "drizzle-orm": "^0.36.4",
     "hono": "^4.6.11",
     "next": "15.0.4",
     "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "react-dom": "19.0.0",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
