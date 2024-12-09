@@ -5,12 +5,12 @@ import { useState } from "react"
 import { v4 as uuidv4 } from "uuid"
 
 export const useBlocks = (
-  initialBlocks: Block[] = [{ id: uuidv4(), content: "" }]
+  initialBlocks: Block[] = [{ id: uuidv4(), content: "", isFocused: true }]
 ) => {
   const [blocks, setBlocks] = useState<Block[]>(initialBlocks)
 
   const addBlock = (currentBlockId: string) => {
-    const newBlock: Block = { id: uuidv4(), content: "" }
+    const newBlock: Block = { id: uuidv4(), content: "", isFocused: true }
     setBlocks((prev) => {
       const index = prev.findIndex((b) => b.id === currentBlockId)
       const newBlocks = [...prev]
@@ -28,9 +28,27 @@ export const useBlocks = (
     )
   }
 
+  const handleFocus = (blockId: string) => {
+    setBlocks((prev) =>
+      prev.map((block) =>
+        block.id === blockId ? { ...block, isFocused: true } : block
+      )
+    )
+  }
+
+  const handleBlur = (blockId: string) => {
+    setBlocks((prev) =>
+      prev.map((block) =>
+        block.id === blockId ? { ...block, isFocused: false } : block
+      )
+    )
+  }
+
   return {
     blocks,
     addBlock,
-    updateBlockContent
+    updateBlockContent,
+    handleFocus,
+    handleBlur
   }
 }

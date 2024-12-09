@@ -8,7 +8,8 @@ import type React from "react"
 import type { ChangeEvent, KeyboardEvent } from "react"
 
 export const Input: React.FC = () => {
-  const { blocks, addBlock, updateBlockContent } = useBlocks()
+  const { blocks, addBlock, updateBlockContent, handleFocus, handleBlur } =
+    useBlocks()
   const { setRef, focusTextarea } = useTextareaRefs()
 
   const handleBlockClick = (blockId: string) => {
@@ -46,6 +47,9 @@ export const Input: React.FC = () => {
           onKeyDown={handleKeyDown}
           onChange={handleChange}
           setTextareaRef={setRef}
+          isFocused={block.isFocused}
+          handleFocus={() => handleFocus(block.id)}
+          handleBlur={() => handleBlur(block.id)}
         />
       ))}
     </div>
