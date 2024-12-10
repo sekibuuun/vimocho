@@ -3,7 +3,10 @@
 import { TextareaBlock } from "@/components/ui/input/textareaBlock"
 import { useBlocks } from "@/lib/hooks/useBlocks"
 import { useTextareaRefs } from "@/lib/hooks/useTextareaRef"
-import { adjustTextareaHeight } from "@/lib/utils/adjustTextarea"
+import {
+  adjustTextareaHeight,
+  findIndexBlocks
+} from "@/lib/utils/textareaUtils"
 import type React from "react"
 import type { ChangeEvent, KeyboardEvent } from "react"
 
@@ -30,7 +33,7 @@ export const Input: React.FC = () => {
 
     if (e.key === "ArrowUp" && e.currentTarget.selectionStart === 0) {
       e.preventDefault()
-      const index = blocks.findIndex((block) => block.id === blockId)
+      const index = findIndexBlocks(blocks, blockId)
       if (index > 0) {
         focusTextarea(blocks[index - 1].id)
       }
@@ -41,7 +44,7 @@ export const Input: React.FC = () => {
       e.currentTarget.selectionStart === e.currentTarget.value.length
     ) {
       e.preventDefault()
-      const index = blocks.findIndex((block) => block.id === blockId)
+      const index = findIndexBlocks(blocks, blockId)
       if (index < blocks.length - 1) {
         focusTextarea(blocks[index + 1].id)
       }
