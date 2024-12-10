@@ -7,3 +7,10 @@ export const adjustTextareaHeight = (textarea: HTMLTextAreaElement) => {
 
 export const findIndexBlocks = (blocks: Block[], blockId: string): number =>
   blocks.findIndex((block) => block.id === blockId)
+
+export const scrollElementIntoView = (elementId: string) => {
+  requestAnimationFrame(() => {
+    const element = document.getElementById(elementId)
+    element?.scrollIntoView({ behavior: "smooth", block: "end" })
+  })
+}

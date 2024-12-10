@@ -5,7 +5,8 @@ import { useBlocks } from "@/lib/hooks/useBlocks"
 import { useTextareaRefs } from "@/lib/hooks/useTextareaRef"
 import {
   adjustTextareaHeight,
-  findIndexBlocks
+  findIndexBlocks,
+  scrollElementIntoView
 } from "@/lib/utils/textareaUtils"
 import type React from "react"
 import type { ChangeEvent, KeyboardEvent } from "react"
@@ -35,7 +36,9 @@ export const Input: React.FC = () => {
       e.preventDefault()
       const index = findIndexBlocks(blocks, blockId)
       if (index > 0) {
-        focusTextarea(blocks[index - 1].id)
+        const prevBlockId = blocks[index - 1].id
+        focusTextarea(prevBlockId)
+        scrollElementIntoView(prevBlockId)
       }
     }
 
@@ -46,7 +49,9 @@ export const Input: React.FC = () => {
       e.preventDefault()
       const index = findIndexBlocks(blocks, blockId)
       if (index < blocks.length - 1) {
-        focusTextarea(blocks[index + 1].id)
+        const nextBlockId = blocks[index + 1].id
+        focusTextarea(nextBlockId)
+        scrollElementIntoView(nextBlockId)
       }
     }
   }
