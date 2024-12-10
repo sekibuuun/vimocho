@@ -1,9 +1,10 @@
 "use client"
 
+import type { TextAreaElementMap } from "@/types/type"
 import { useRef } from "react"
 
 export const useTextareaRefs = () => {
-  const refs = useRef<{ [key: string]: HTMLTextAreaElement | null }>({})
+  const refs = useRef<TextAreaElementMap>({})
 
   const setTextareaRef = (
     element: HTMLTextAreaElement | null,

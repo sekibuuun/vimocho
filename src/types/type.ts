@@ -3,3 +3,5 @@ export type Block = {
   content: string
   isFocused: boolean
 }
+
+export type TextAreaElementMap = { [key: string]: HTMLTextAreaElement | null }
