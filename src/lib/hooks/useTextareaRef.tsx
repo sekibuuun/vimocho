@@ -24,6 +24,7 @@ export const useTextareaRefs = () => {
   }
 
   return {
+    refs,
     setTextareaRef,
     focusTextarea
   }

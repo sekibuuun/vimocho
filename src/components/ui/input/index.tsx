@@ -14,7 +14,7 @@ import type { ChangeEvent, KeyboardEvent } from "react"
 export const Input: React.FC = () => {
   const { blocks, addBlock, updateBlockContent, handleFocus, handleBlur } =
     useBlocks()
-  const { setTextareaRef, focusTextarea } = useTextareaRefs()
+  const { refs, setTextareaRef, focusTextarea } = useTextareaRefs()
 
   const handleBlockClick = (blockId: string) => {
     focusTextarea(blockId)
@@ -54,6 +54,19 @@ export const Input: React.FC = () => {
         scrollElementIntoView(nextBlockId)
       }
     }
+
+    if (e.key === "Backspace" && e.currentTarget.value === "") {
+      e.preventDefault()
+      if (refs.current[blockId]?.value === "" && blocks.length > 1) {
+        // 切り出したい
+        refs.current[blockId]?.remove()
+        const index = findIndexBlocks(blocks, blockId)
+        blocks.splice(index, 1)
+        const prevBlockId = blocks[index - 1].id
+        focusTextarea(prevBlockId)
+        console.log(blocks)
+      }
+    }
   }
 
   const handleChange = (
@@ -71,7 +84,7 @@ export const Input: React.FC = () => {
           key={block.id}
           block={block}
           onBlockClick={handleBlockClick}
-          onKeyDown={handleKeyDown}
+          onKeyDown={(e) => handleKeyDown(e, block.id)}
           onChange={handleChange}
           setTextareaRef={setTextareaRef}
           isFocused={block.isFocused}
