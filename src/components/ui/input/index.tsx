@@ -5,6 +5,7 @@ import { useBlocks } from "@/lib/hooks/useBlocks"
 import { useTextareaRefs } from "@/lib/hooks/useTextareaRef"
 import {
   adjustTextareaHeight,
+  deleteBlock,
   findIndexBlocks,
   scrollElementIntoView
 } from "@/lib/utils/textareaUtils"
@@ -58,13 +59,7 @@ export const Input: React.FC = () => {
     if (e.key === "Backspace" && e.currentTarget.value === "") {
       e.preventDefault()
       if (refs.current[blockId]?.value === "" && blocks.length > 1) {
-        // 切り出したい
-        refs.current[blockId]?.remove()
-        const index = findIndexBlocks(blocks, blockId)
-        blocks.splice(index, 1)
-        const prevBlockId = blocks[index - 1].id
-        focusTextarea(prevBlockId)
-        console.log(blocks)
+        deleteBlock(refs, blocks, blockId, focusTextarea)
       }
     }
   }
