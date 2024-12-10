@@ -27,6 +27,25 @@ export const Input: React.FC = () => {
       // 新しいブロックにフォーカスを移動
       requestAnimationFrame(() => focusTextarea(newBlock.id))
     }
+
+    if (e.key === "ArrowUp" && e.currentTarget.selectionStart === 0) {
+      e.preventDefault()
+      const index = blocks.findIndex((block) => block.id === blockId)
+      if (index > 0) {
+        focusTextarea(blocks[index - 1].id)
+      }
+    }
+
+    if (
+      e.key === "ArrowDown" &&
+      e.currentTarget.selectionStart === e.currentTarget.value.length
+    ) {
+      e.preventDefault()
+      const index = blocks.findIndex((block) => block.id === blockId)
+      if (index < blocks.length - 1) {
+        focusTextarea(blocks[index + 1].id)
+      }
+    }
   }
 
   const handleChange = (
