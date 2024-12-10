@@ -3,7 +3,11 @@
 import { TextareaBlock } from "@/components/ui/input/textareaBlock"
 import { useBlocks } from "@/lib/hooks/useBlocks"
 import { useTextareaRefs } from "@/lib/hooks/useTextareaRef"
-import { adjustTextareaHeight } from "@/lib/utils/adjustTextarea"
+import {
+  adjustTextareaHeight,
+  findIndexBlocks,
+  scrollElementIntoView
+} from "@/lib/utils/textareaUtils"
 import type React from "react"
 import type { ChangeEvent, KeyboardEvent } from "react"
 
@@ -26,6 +30,29 @@ export const Input: React.FC = () => {
 
       // 新しいブロックにフォーカスを移動
       requestAnimationFrame(() => focusTextarea(newBlock.id))
+    }
+
+    if (e.key === "ArrowUp" && e.currentTarget.selectionStart === 0) {
+      e.preventDefault()
+      const index = findIndexBlocks(blocks, blockId)
+      if (index > 0) {
+        const prevBlockId = blocks[index - 1].id
+        focusTextarea(prevBlockId)
+        scrollElementIntoView(prevBlockId)
+      }
+    }
+
+    if (
+      e.key === "ArrowDown" &&
+      e.currentTarget.selectionStart === e.currentTarget.value.length
+    ) {
+      e.preventDefault()
+      const index = findIndexBlocks(blocks, blockId)
+      if (index < blocks.length - 1) {
+        const nextBlockId = blocks[index + 1].id
+        focusTextarea(nextBlockId)
+        scrollElementIntoView(nextBlockId)
+      }
     }
   }
 

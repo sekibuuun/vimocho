@@ -3,6 +3,7 @@
 import type { Block } from "@/types/type"
 import { useState } from "react"
 import { v4 as uuidv4 } from "uuid"
+import { findIndexBlocks } from "../utils/textareaUtils"
 
 export const useBlocks = (
   initialBlocks: Block[] = [{ id: uuidv4(), content: "", isFocused: true }]
@@ -12,7 +13,7 @@ export const useBlocks = (
   const addBlock = (currentBlockId: string) => {
     const newBlock: Block = { id: uuidv4(), content: "", isFocused: true }
     setBlocks((prev) => {
-      const index = prev.findIndex((b) => b.id === currentBlockId)
+      const index = findIndexBlocks(prev, currentBlockId)
       const newBlocks = [...prev]
       newBlocks.splice(index + 1, 0, newBlock)
       return newBlocks
