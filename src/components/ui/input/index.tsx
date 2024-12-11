@@ -66,7 +66,7 @@ export const Input: React.FC = () => {
     if (e.key === "Backspace" && e.currentTarget.value === "") {
       e.preventDefault()
       if (refs.current[blockId]?.value === "" && blocks.length > 1) {
-        deleteBlock(refs, blocks, blockId, focusTextarea)
+        deleteBlock(blocks, blockId, focusTextarea)
       }
     }
   }

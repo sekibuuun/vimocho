@@ -1,5 +1,4 @@
-import type { Block, TextAreaElementMap } from "@/types/type"
-import type { RefObject } from "react"
+import type { Block } from "@/types/type"
 
 export const adjustTextareaHeight = (textarea: HTMLTextAreaElement) => {
   textarea.style.height = "auto"
@@ -27,14 +26,15 @@ export const scrollElementIntoView = (elementId: string) => {
 }
 
 export const deleteBlock = (
-  refs: RefObject<TextAreaElementMap>,
   blocks: Block[],
   blockId: string,
   focusTextarea: (blockId: string) => void
 ) => {
   const index = findIndexBlocks(blocks, blockId)
-  refs.current[blockId]?.remove()
+  if (index === -1) return
   blocks.splice(index, 1)
-  const prevBlockId = blocks[index - 1].id
-  focusTextarea(prevBlockId)
+  if (index > 0) {
+    const prevBlockId = blocks[index - 1].id
+    focusTextarea(prevBlockId)
+  }
 }
