@@ -1,17 +1,6 @@
-import type { Block } from "@/types/type"
+import type { TextareaBlockProps } from "@/types/type"
 import type React from "react"
-import type { ChangeEvent, KeyboardEvent } from "react"
-export const TextareaBlock: React.FC<{
-  block: Block
-  onBlockClick: (blockId: string) => void
-  onKeyDown: (e: KeyboardEvent<HTMLTextAreaElement>, blockId: string) => void
-  onChange: (e: ChangeEvent<HTMLTextAreaElement>, blockId: string) => void
-  setTextareaRef: (element: HTMLTextAreaElement | null, blockId: string) => void
-  setIsComposing: (isComposing: boolean) => void
-  isFocused: boolean
-  handleFocus: (blockId: string) => void
-  handleBlur: (blockId: string) => void
-}> = ({
+export const TextareaBlock: React.FC<TextareaBlockProps> = ({
   block,
   onBlockClick,
   onKeyDown,
