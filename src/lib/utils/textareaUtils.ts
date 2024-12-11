@@ -24,3 +24,17 @@ export const scrollElementIntoView = (elementId: string) => {
     }
   })
 }
+
+export const deleteBlock = (
+  blocks: Block[],
+  blockId: string,
+  focusTextarea: (blockId: string) => void
+) => {
+  const index = findIndexBlocks(blocks, blockId)
+  if (index === -1) return
+  blocks.splice(index, 1)
+  if (index > 0) {
+    const prevBlockId = blocks[index - 1].id
+    focusTextarea(prevBlockId)
+  }
+}

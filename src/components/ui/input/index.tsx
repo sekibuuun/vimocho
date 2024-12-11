@@ -5,6 +5,7 @@ import { useBlocks } from "@/lib/hooks/useBlocks"
 import { useTextareaRefs } from "@/lib/hooks/useTextareaRef"
 import {
   adjustTextareaHeight,
+  deleteBlock,
   findIndexBlocks,
   scrollElementIntoView
 } from "@/lib/utils/textareaUtils"
@@ -12,9 +13,16 @@ import type React from "react"
 import type { ChangeEvent, KeyboardEvent } from "react"
 
 export const Input: React.FC = () => {
-  const { blocks, addBlock, updateBlockContent, handleFocus, handleBlur } =
-    useBlocks()
-  const { setTextareaRef, focusTextarea } = useTextareaRefs()
+  const {
+    blocks,
+    addBlock,
+    updateBlockContent,
+    handleFocus,
+    handleBlur,
+    isComposing,
+    setIsComposing
+  } = useBlocks()
+  const { refs, setTextareaRef, focusTextarea } = useTextareaRefs()
 
   const handleBlockClick = (blockId: string) => {
     focusTextarea(blockId)
@@ -24,7 +32,7 @@ export const Input: React.FC = () => {
     e: KeyboardEvent<HTMLTextAreaElement>,
     blockId: string
   ) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && !isComposing) {
       e.preventDefault()
       const newBlock = addBlock(blockId)
 
@@ -54,6 +62,13 @@ export const Input: React.FC = () => {
         scrollElementIntoView(nextBlockId)
       }
     }
+
+    if (e.key === "Backspace" && e.currentTarget.value === "") {
+      e.preventDefault()
+      if (refs.current[blockId]?.value === "" && blocks.length > 1) {
+        deleteBlock(blocks, blockId, focusTextarea)
+      }
+    }
   }
 
   const handleChange = (
@@ -71,8 +86,9 @@ export const Input: React.FC = () => {
           key={block.id}
           block={block}
           onBlockClick={handleBlockClick}
-          onKeyDown={handleKeyDown}
+          onKeyDown={(e) => handleKeyDown(e, block.id)}
           onChange={handleChange}
+          setIsComposing={setIsComposing}
           setTextareaRef={setTextareaRef}
           isFocused={block.isFocused}
           handleFocus={() => handleFocus(block.id)}

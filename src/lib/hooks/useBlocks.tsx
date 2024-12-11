@@ -9,6 +9,7 @@ export const useBlocks = (
   initialBlocks: Block[] = [{ id: uuidv4(), content: "", isFocused: true }]
 ) => {
   const [blocks, setBlocks] = useState<Block[]>(initialBlocks)
+  const [isComposing, setIsComposing] = useState<boolean>(false)
 
   const addBlock = (currentBlockId: string) => {
     const newBlock: Block = { id: uuidv4(), content: "", isFocused: true }
@@ -52,6 +53,8 @@ export const useBlocks = (
     addBlock,
     updateBlockContent,
     handleFocus,
-    handleBlur
+    handleBlur,
+    isComposing,
+    setIsComposing
   }
 }
