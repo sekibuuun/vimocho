@@ -38,10 +38,6 @@ export const TextareaBlock: React.FC<{
       onCompositionEnd={() => setIsComposing(false)}
       placeholder={`${!isFocused ? "" : "文字を入力するか、「/」でコマンドを呼び出します..."}`}
       rows={1}
-      style={{
-        overflow: "hidden",
-        lineHeight: "1.5"
-      }}
     />
   </div>
 )
