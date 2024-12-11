@@ -13,8 +13,15 @@ import type React from "react"
 import type { ChangeEvent, KeyboardEvent } from "react"
 
 export const Input: React.FC = () => {
-  const { blocks, addBlock, updateBlockContent, handleFocus, handleBlur } =
-    useBlocks()
+  const {
+    blocks,
+    addBlock,
+    updateBlockContent,
+    handleFocus,
+    handleBlur,
+    isComposing,
+    setIsComposing
+  } = useBlocks()
   const { refs, setTextareaRef, focusTextarea } = useTextareaRefs()
 
   const handleBlockClick = (blockId: string) => {
@@ -25,7 +32,7 @@ export const Input: React.FC = () => {
     e: KeyboardEvent<HTMLTextAreaElement>,
     blockId: string
   ) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && !isComposing) {
       e.preventDefault()
       const newBlock = addBlock(blockId)
 
@@ -81,6 +88,7 @@ export const Input: React.FC = () => {
           onBlockClick={handleBlockClick}
           onKeyDown={(e) => handleKeyDown(e, block.id)}
           onChange={handleChange}
+          setIsComposing={setIsComposing}
           setTextareaRef={setTextareaRef}
           isFocused={block.isFocused}
           handleFocus={() => handleFocus(block.id)}
