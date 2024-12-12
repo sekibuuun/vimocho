@@ -43,3 +43,8 @@ export const deleteBlock = (
     focusTextarea(prevBlockId)
   }
 }
+
+export const animateBlockFocus = (
+  blockId: string,
+  focusBlockElement: (blockId: string) => void
+) => requestAnimationFrame(() => focusBlockElement(blockId))
