@@ -16,7 +16,6 @@ export const useBlockElementRef = () => {
 
   const focusBlockElement = (blockId: string) => {
     const textBlock = blockElementRefs.current[blockId]
-    console.log(textBlock)
     if (textBlock) {
       textBlock.focus()
     }
