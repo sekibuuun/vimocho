@@ -2,7 +2,7 @@
 
 import { TextareaBlock } from "@/components/ui/input/textareaBlock"
 import { useBlocks } from "@/lib/hooks/useBlocks"
-import { useTextareaRefs } from "@/lib/hooks/useTextareaRef"
+import { useTextareaRef } from "@/lib/hooks/useTextareaRef"
 import {
   adjustTextareaHeight,
   deleteBlock,
@@ -22,7 +22,7 @@ export const Input: React.FC = () => {
     isComposing,
     setIsComposing
   } = useBlocks()
-  const { refs, setTextareaRef, focusTextarea } = useTextareaRefs()
+  const { refs, setTextareaRef, focusTextarea } = useTextareaRef()
 
   const handleBlockClick = (blockId: string) => {
     focusTextarea(blockId)

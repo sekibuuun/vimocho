@@ -3,7 +3,7 @@
 import type { TextAreaElementMap } from "@/types/type"
 import { useRef } from "react"
 
-export const useTextareaRefs = () => {
+export const useTextareaRef = () => {
   const refs = useRef<TextAreaElementMap>({})
 
   const setTextareaRef = (
