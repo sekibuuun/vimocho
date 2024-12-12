@@ -1,11 +1,11 @@
-import type { TextareaBlockProps } from "@/types/type"
+import type { TextAreaElementProps } from "@/types/type"
 import type React from "react"
-export const TextareaBlock: React.FC<TextareaBlockProps> = ({
+export const TextareaBlock: React.FC<TextAreaElementProps> = ({
   block,
   onBlockClick,
   onKeyDown,
   onChange,
-  setTextareaRef,
+  setBlockElementRef,
   setIsComposing,
   isFocused,
   handleFocus,
@@ -16,7 +16,7 @@ export const TextareaBlock: React.FC<TextareaBlockProps> = ({
     onClick={() => onBlockClick(block.id)}
   >
     <textarea
-      ref={(el) => setTextareaRef(el, block.id)}
+      ref={(el) => setBlockElementRef(el, block.id)}
       className="w-full resize-none outline-none bg-transparent py-1 overflow-hidden leading-normal"
       value={block.content}
       onChange={(e) => onChange(e, block.id)}
