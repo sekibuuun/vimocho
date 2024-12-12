@@ -3,16 +3,23 @@
 import type { Block } from "@/types/type"
 import { useState } from "react"
 import { v4 as uuidv4 } from "uuid"
-import { findIndexBlocks } from "../utils/textareaUtils"
+import { findIndexBlocks } from "../utils/textBlockUtils"
 
 export const useBlocks = (
-  initialBlocks: Block[] = [{ id: uuidv4(), content: "", isFocused: true }]
+  initialBlocks: Block[] = [
+    { id: uuidv4(), content: "", isFocused: true, type: "textarea" }
+  ]
 ) => {
   const [blocks, setBlocks] = useState<Block[]>(initialBlocks)
   const [isComposing, setIsComposing] = useState<boolean>(false)
 
   const addBlock = (currentBlockId: string) => {
-    const newBlock: Block = { id: uuidv4(), content: "", isFocused: true }
+    const newBlock: Block = {
+      id: uuidv4(),
+      content: "",
+      isFocused: true,
+      type: "textarea"
+    }
     setBlocks((prev) => {
       const index = findIndexBlocks(prev, currentBlockId)
       const newBlocks = [...prev]
@@ -27,6 +34,12 @@ export const useBlocks = (
       prev.map((block) =>
         block.id === blockId ? { ...block, content } : block
       )
+    )
+  }
+
+  const updateBlockType = (blockId: string, type: Block["type"]) => {
+    setBlocks((prev) =>
+      prev.map((block) => (block.id === blockId ? { ...block, type } : block))
     )
   }
 
@@ -52,6 +65,7 @@ export const useBlocks = (
     blocks,
     addBlock,
     updateBlockContent,
+    updateBlockType,
     handleFocus,
     handleBlur,
     isComposing,
