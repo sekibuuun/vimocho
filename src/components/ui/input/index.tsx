@@ -1,14 +1,18 @@
 "use client"
 
+import { HeadingOneBlock } from "@/components/ui/input/headingOneBlock"
 import { TextareaBlock } from "@/components/ui/input/textareaBlock"
+import { useBlockElementRef } from "@/lib/hooks/useBlockElementRef"
 import { useBlocks } from "@/lib/hooks/useBlocks"
-import { useTextareaRef } from "@/lib/hooks/useTextareaRef"
 import {
   adjustTextareaHeight,
+  animateBlockFocus,
   deleteBlock,
+  findBlock,
   findIndexBlocks,
   scrollElementIntoView
-} from "@/lib/utils/textareaUtils"
+} from "@/lib/utils/textBlockUtils"
+import type { Block, KindOfElementType } from "@/types/type"
 import type React from "react"
 import type { ChangeEvent, KeyboardEvent } from "react"
 
@@ -17,61 +21,83 @@ export const Input: React.FC = () => {
     blocks,
     addBlock,
     updateBlockContent,
+    updateBlockType,
     handleFocus,
     handleBlur,
-    isComposing,
     setIsComposing
   } = useBlocks()
-  const { refs, setTextareaRef, focusTextarea } = useTextareaRef()
+  const { setBlockElementRef, focusBlockElement } = useBlockElementRef()
 
   const handleBlockClick = (blockId: string) => {
-    focusTextarea(blockId)
+    const index = findIndexBlocks(blocks, blockId)
+    focusBlockElement(String(index))
   }
 
   const handleKeyDown = (
-    e: KeyboardEvent<HTMLTextAreaElement>,
+    e: KeyboardEvent<KindOfElementType>,
     blockId: string
   ) => {
-    if (e.key === "Enter" && !e.shiftKey && !isComposing) {
-      e.preventDefault()
-      const newBlock = addBlock(blockId)
+    const block = findBlock(blocks, blockId)
 
-      // 新しいブロックにフォーカスを移動
-      requestAnimationFrame(() => focusTextarea(newBlock.id))
+    if (block?.type === "textarea") {
+      const textarea = e.target as HTMLTextAreaElement
+      if (textarea.value === "/h1") {
+        e.preventDefault()
+        updateBlockType(blockId, "headingOne")
+        updateBlockContent(blockId, "")
+        animateBlockFocus(blockId, focusBlockElement)
+        return
+      }
     }
 
-    if (e.key === "ArrowUp" && e.currentTarget.selectionStart === 0) {
+    if (block?.type === "headingOne") {
+      const heading = e.target as HTMLHeadingElement
+      if (heading.textContent === "/p") {
+        e.preventDefault()
+        updateBlockType(blockId, "textarea")
+        updateBlockContent(blockId, "")
+        animateBlockFocus(blockId, focusBlockElement)
+        return
+      }
+    }
+
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault()
+      const newBlock = addBlock(blockId)
+      animateBlockFocus(newBlock.id, focusBlockElement)
+      return
+    }
+
+    if (e.key === "Backspace" && e.currentTarget.textContent === "") {
+      e.preventDefault()
+      if (blocks.length > 1) {
+        deleteBlock(blocks, blockId, focusBlockElement)
+        return
+      }
+    }
+
+    if (e.key === "ArrowUp") {
       e.preventDefault()
       const index = findIndexBlocks(blocks, blockId)
       if (index > 0) {
-        const prevBlockId = blocks[index - 1].id
-        focusTextarea(prevBlockId)
-        scrollElementIntoView(prevBlockId)
+        const prevBlock = blocks[index - 1]
+        focusBlockElement(prevBlock.id)
+        scrollElementIntoView(prevBlock.id)
       }
     }
 
-    if (
-      e.key === "ArrowDown" &&
-      e.currentTarget.selectionStart === e.currentTarget.value.length
-    ) {
+    if (e.key === "ArrowDown") {
       e.preventDefault()
       const index = findIndexBlocks(blocks, blockId)
       if (index < blocks.length - 1) {
-        const nextBlockId = blocks[index + 1].id
-        focusTextarea(nextBlockId)
-        scrollElementIntoView(nextBlockId)
-      }
-    }
-
-    if (e.key === "Backspace" && e.currentTarget.value === "") {
-      e.preventDefault()
-      if (refs.current[blockId]?.value === "" && blocks.length > 1) {
-        deleteBlock(blocks, blockId, focusTextarea)
+        const nextBlock = blocks[index + 1]
+        focusBlockElement(nextBlock.id)
+        scrollElementIntoView(nextBlock.id)
       }
     }
   }
 
-  const handleChange = (
+  const handleTextareaChange = (
     e: ChangeEvent<HTMLTextAreaElement>,
     blockId: string
   ) => {
@@ -79,22 +105,46 @@ export const Input: React.FC = () => {
     adjustTextareaHeight(e.target)
   }
 
-  return (
-    <div className="max-w-2xl mx-2">
-      {blocks.map((block) => (
-        <TextareaBlock
-          key={block.id}
-          block={block}
-          onBlockClick={handleBlockClick}
-          onKeyDown={(e) => handleKeyDown(e, block.id)}
-          onChange={handleChange}
-          setIsComposing={setIsComposing}
-          setTextareaRef={setTextareaRef}
-          isFocused={block.isFocused}
-          handleFocus={() => handleFocus(block.id)}
-          handleBlur={() => handleBlur(block.id)}
-        />
-      ))}
-    </div>
-  )
+  const handleHeadingOneChange = (
+    e: React.FormEvent<HTMLHeadingElement>,
+    blockId: string
+  ) => {
+    updateBlockContent(blockId, e.currentTarget.textContent || "")
+  }
+
+  const renderBlock = (block: Block) => {
+    switch (block.type) {
+      case "headingOne":
+        return (
+          <HeadingOneBlock
+            key={block.id}
+            block={block}
+            onBlockClick={handleBlockClick}
+            onKeyDown={(e) => handleKeyDown(e, block.id)}
+            onChange={handleHeadingOneChange}
+            setBlockElementRef={setBlockElementRef}
+            setIsComposing={setIsComposing}
+            handleFocus={() => handleFocus(block.id)}
+            handleBlur={() => handleBlur(block.id)}
+          />
+        )
+      default:
+        return (
+          <TextareaBlock
+            key={block.id}
+            block={block}
+            onBlockClick={handleBlockClick}
+            onKeyDown={(e) => handleKeyDown(e, block.id)}
+            onChange={handleTextareaChange}
+            setIsComposing={setIsComposing}
+            setBlockElementRef={setBlockElementRef}
+            isFocused={block.isFocused}
+            handleFocus={() => handleFocus(block.id)}
+            handleBlur={() => handleBlur(block.id)}
+          />
+        )
+    }
+  }
+
+  return <div className="max-w-2xl mx-2">{blocks.map(renderBlock)}</div>
 }
