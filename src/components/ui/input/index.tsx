@@ -1,19 +1,14 @@
 "use client"
-
-import { HeadingOneBlock } from "@/components/ui/input/headingOneBlock"
-import { TextareaBlock } from "@/components/ui/input/textareaBlock"
+import { BlockElement } from "@/components/ui/input/block"
 import { useBlockElementRef } from "@/lib/hooks/useBlockElementRef"
 import { useBlocks } from "@/lib/hooks/useBlocks"
 import {
-  adjustTextareaHeight,
   animateBlockFocus,
   deleteBlock,
   findBlock,
   findIndexBlocks,
   scrollElementIntoView
 } from "@/lib/utils/textBlockUtils"
-import type { Block, KindOfElementType } from "@/types/type"
-import type React from "react"
 import type { ChangeEvent, KeyboardEvent } from "react"
 
 export const Input: React.FC = () => {
@@ -35,31 +30,26 @@ export const Input: React.FC = () => {
   }
 
   const handleKeyDown = (
-    e: KeyboardEvent<KindOfElementType>,
+    e: KeyboardEvent<HTMLInputElement>,
     blockId: string
   ) => {
     const block = findBlock(blocks, blockId)
+    const input = e.target as HTMLInputElement
 
-    if (block?.type === "textarea") {
-      const textarea = e.target as HTMLTextAreaElement
-      if (textarea.value === "/h1") {
-        e.preventDefault()
-        updateBlockType(blockId, "headingOne")
-        updateBlockContent(blockId, "")
-        animateBlockFocus(blockId, focusBlockElement)
-        return
-      }
+    if (block?.type === "input" && input.value === "/h1") {
+      e.preventDefault()
+      updateBlockType(blockId, "headingOne")
+      updateBlockContent(blockId, "")
+      animateBlockFocus(blockId, focusBlockElement)
+      return
     }
 
-    if (block?.type === "headingOne") {
-      const heading = e.target as HTMLHeadingElement
-      if (heading.textContent === "/p") {
-        e.preventDefault()
-        updateBlockType(blockId, "textarea")
-        updateBlockContent(blockId, "")
-        animateBlockFocus(blockId, focusBlockElement)
-        return
-      }
+    if (block?.type === "headingOne" && input.value === "/p") {
+      e.preventDefault()
+      updateBlockType(blockId, "input")
+      updateBlockContent(blockId, "")
+      animateBlockFocus(blockId, focusBlockElement)
+      return
     }
 
     if (e.key === "Enter" && !e.shiftKey && !isComposing) {
@@ -69,7 +59,7 @@ export const Input: React.FC = () => {
       return
     }
 
-    if (e.key === "Backspace" && e.currentTarget.textContent === "") {
+    if (e.key === "Backspace" && input.value === "") {
       e.preventDefault()
       if (blocks.length > 1) {
         deleteBlock(blocks, blockId, focusBlockElement)
@@ -98,54 +88,26 @@ export const Input: React.FC = () => {
     }
   }
 
-  const handleTextareaChange = (
-    e: ChangeEvent<HTMLTextAreaElement>,
-    blockId: string
-  ) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>, blockId: string) => {
     updateBlockContent(blockId, e.target.value)
-    adjustTextareaHeight(e.target)
   }
 
-  const handleHeadingOneChange = (
-    e: React.FormEvent<HTMLHeadingElement>,
-    blockId: string
-  ) => {
-    updateBlockContent(blockId, e.currentTarget.textContent || "")
-  }
-
-  const renderBlock = (block: Block) => {
-    switch (block.type) {
-      case "headingOne":
-        return (
-          <HeadingOneBlock
-            key={block.id}
-            block={block}
-            onBlockClick={handleBlockClick}
-            onKeyDown={(e) => handleKeyDown(e, block.id)}
-            onChange={handleHeadingOneChange}
-            setBlockElementRef={setBlockElementRef}
-            setIsComposing={setIsComposing}
-            handleFocus={() => handleFocus(block.id)}
-            handleBlur={() => handleBlur(block.id)}
-          />
-        )
-      default:
-        return (
-          <TextareaBlock
-            key={block.id}
-            block={block}
-            onBlockClick={handleBlockClick}
-            onKeyDown={(e) => handleKeyDown(e, block.id)}
-            onChange={handleTextareaChange}
-            setIsComposing={setIsComposing}
-            setBlockElementRef={setBlockElementRef}
-            isFocused={block.isFocused}
-            handleFocus={() => handleFocus(block.id)}
-            handleBlur={() => handleBlur(block.id)}
-          />
-        )
-    }
-  }
-
-  return <div className="max-w-2xl mx-2">{blocks.map(renderBlock)}</div>
+  return (
+    <div className="max-w-2xl mx-2">
+      {blocks.map((block) => (
+        <BlockElement
+          key={block.id}
+          block={block}
+          onBlockClick={handleBlockClick}
+          onKeyDown={(e) => handleKeyDown(e, block.id)}
+          onChange={handleChange}
+          setIsComposing={setIsComposing}
+          setBlockElementRef={setBlockElementRef}
+          isFocused={block.isFocused}
+          handleFocus={() => handleFocus(block.id)}
+          handleBlur={() => handleBlur(block.id)}
+        />
+      ))}
+    </div>
+  )
 }

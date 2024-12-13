@@ -1,12 +1,15 @@
 "use client"
 
-import type { BlockElementMap, KindOfElementType } from "@/types/type"
+import type { InputElementMap } from "@/types/type"
 import { useRef } from "react"
 
 export const useBlockElementRef = () => {
-  const blockElementRefs = useRef<BlockElementMap>({})
+  const blockElementRefs = useRef<InputElementMap>({})
 
-  const setBlockElementRef = (element: KindOfElementType, blockId: string) => {
+  const setBlockElementRef = (
+    element: HTMLInputElement | null,
+    blockId: string
+  ) => {
     if (!element) {
       delete blockElementRefs.current[blockId]
       return
