@@ -7,7 +7,7 @@ import { findIndexBlocks } from "../utils/textBlockUtils"
 
 export const useBlocks = (
   initialBlocks: Block[] = [
-    { id: uuidv4(), content: "", isFocused: true, type: "textarea" }
+    { id: uuidv4(), content: "", isFocused: true, type: "input" }
   ]
 ) => {
   const [blocks, setBlocks] = useState<Block[]>(initialBlocks)
@@ -18,7 +18,7 @@ export const useBlocks = (
       id: uuidv4(),
       content: "",
       isFocused: true,
-      type: "textarea"
+      type: "input"
     }
     setBlocks((prev) => {
       const index = findIndexBlocks(prev, currentBlockId)

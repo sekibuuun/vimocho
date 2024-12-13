@@ -1,9 +1,4 @@
-import type { Block } from "@/types/type"
-
-export const adjustTextareaHeight = (textarea: HTMLTextAreaElement) => {
-  textarea.style.height = "auto"
-  textarea.style.height = `${textarea.scrollHeight}px`
-}
+import type { Block, BlockType } from "@/types/type"
 
 export const findIndexBlocks = (blocks: Block[], blockId: string): number =>
   blocks.findIndex((block) => block.id === blockId)
@@ -43,3 +38,19 @@ export const animateBlockFocus = (
   blockId: string,
   focusBlockElement: (blockId: string) => void
 ) => requestAnimationFrame(() => focusBlockElement(blockId))
+
+export const getHeadingStyles = (type: BlockType): string => {
+  switch (type) {
+    case "headingOne":
+      return "text-3xl font-bold"
+    default:
+      return "leading-normal"
+  }
+}
+
+export const getBlockHeight = (type: BlockType): string => {
+  if (type.startsWith("heading")) {
+    return "min-h-[2rem]"
+  }
+  return "min-h-[1rem]"
+}
