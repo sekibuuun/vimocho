@@ -49,7 +49,7 @@ export const getHeadingStyles = (type: BlockType): string => {
 }
 
 export const getBlockHeight = (type: BlockType): string => {
-  if (type.startsWith("heading-")) {
+  if (type.startsWith("heading")) {
     return "min-h-[2rem]"
   }
   return "min-h-[1rem]"
