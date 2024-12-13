@@ -1,32 +1,35 @@
-import type { TextAreaElementProps } from "@/types/type"
+import type { HeadingElementProps } from "@/types/type"
 import type React from "react"
-export const TextareaBlock: React.FC<TextAreaElementProps> = ({
+
+export const HeadingOneBlock: React.FC<HeadingElementProps> = ({
   block,
   onBlockClick,
   onKeyDown,
   onChange,
   setBlockElementRef,
   setIsComposing,
-  isFocused,
   handleFocus,
   handleBlur
 }) => (
   <div
-    className="min-h-[1rem] p-1 rounded cursor-text"
+    className="min-h-[2rem] p-1 rounded cursor-text"
     onClick={() => onBlockClick(block.id)}
   >
-    <textarea
+    <h1
       ref={(el) => setBlockElementRef(el, block.id)}
-      className="w-full resize-none outline-none bg-transparent py-1 overflow-hidden leading-normal"
-      value={block.content}
+      className="w-full outline-none bg-transparent py-1 text-3xl font-bold"
+      contentEditable
       onChange={(e) => onChange(e, block.id)}
       onFocus={() => handleFocus(block.id)}
       onBlur={() => handleBlur(block.id)}
       onKeyDown={(e) => onKeyDown(e, block.id)}
       onCompositionStart={() => setIsComposing(true)}
       onCompositionEnd={() => setIsComposing(false)}
-      placeholder={`${!isFocused ? "" : "文字を入力するか、「/」でコマンドを呼び出します..."}`}
-      rows={1}
-    />
+      suppressContentEditableWarning
+      aria-multiline="false"
+      aria-label="heading-one"
+    >
+      {block.content}
+    </h1>
   </div>
 )
