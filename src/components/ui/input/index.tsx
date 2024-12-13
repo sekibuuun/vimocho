@@ -24,6 +24,7 @@ export const Input: React.FC = () => {
     updateBlockType,
     handleFocus,
     handleBlur,
+    isComposing,
     setIsComposing
   } = useBlocks()
   const { setBlockElementRef, focusBlockElement } = useBlockElementRef()
@@ -61,7 +62,7 @@ export const Input: React.FC = () => {
       }
     }
 
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && !isComposing) {
       e.preventDefault()
       const newBlock = addBlock(blockId)
       animateBlockFocus(newBlock.id, focusBlockElement)
