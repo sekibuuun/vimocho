@@ -26,6 +26,8 @@ export const HeadingOneBlock: React.FC<HeadingElementProps> = ({
       onCompositionStart={() => setIsComposing(true)}
       onCompositionEnd={() => setIsComposing(false)}
       suppressContentEditableWarning
+      aria-multiline="false"
+      aria-label="heading-one"
     >
       {block.content}
     </h1>
