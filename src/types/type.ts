@@ -1,6 +1,6 @@
 import type { ChangeEvent, KeyboardEvent } from "react"
 
-export type BlockType = "input" | "headingOne"
+export type BlockType = "input" | "headingOne" | "headingTwo" | "headingThree"
 
 export type Block = {
   id: string

@@ -15,7 +15,7 @@ const config: Config = {
       }
     }
   },
-  safelist: ["text-3xl", "font-bold", "leading-normal"],
+  safelist: ["text-3xl", "text-2xl", "text-xl", "font-bold", "leading-normal"],
   plugins: []
 }
 export default config
