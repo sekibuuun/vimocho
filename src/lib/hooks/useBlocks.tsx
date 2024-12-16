@@ -1,6 +1,6 @@
 "use client"
 
-import type { Block } from "@/types/type"
+import type { Block, BlockType } from "@/types/type"
 import { useState } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { findIndexBlocks } from "../utils/textBlockUtils"
@@ -37,7 +37,7 @@ export const useBlocks = (
     )
   }
 
-  const updateBlockType = (blockId: string, type: Block["type"]) => {
+  const updateBlockType = (blockId: string, type: BlockType) => {
     setBlocks((prev) =>
       prev.map((block) => (block.id === blockId ? { ...block, type } : block))
     )
