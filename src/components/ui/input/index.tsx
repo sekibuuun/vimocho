@@ -35,16 +35,28 @@ export const Input: React.FC = () => {
   ) => {
     const block = findBlock(blocks, blockId)
     const input = e.target as HTMLInputElement
-
-    if (block?.type === "input" && input.value === "/h1") {
+    const validTags = ["/h1", "/h2", "/h3"]
+    if (block?.type === "input" && validTags.includes(input.value)) {
       e.preventDefault()
-      updateBlockType(blockId, "headingOne")
+      switch (input.value) {
+        case "/h1":
+          updateBlockType(blockId, "headingOne")
+          break
+        case "/h2":
+          updateBlockType(blockId, "headingTwo")
+          break
+        case "/h3":
+          updateBlockType(blockId, "headingThree")
+          break
+        default:
+          break
+      }
       updateBlockContent(blockId, "")
       animateBlockFocus(blockId, focusBlockElement)
       return
     }
 
-    if (block?.type === "headingOne" && input.value === "/p") {
+    if (block?.type !== "input" && input.value === "/p") {
       e.preventDefault()
       updateBlockType(blockId, "input")
       updateBlockContent(blockId, "")

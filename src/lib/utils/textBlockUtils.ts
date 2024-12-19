@@ -43,6 +43,10 @@ export const getHeadingStyles = (type: BlockType): string => {
   switch (type) {
     case "headingOne":
       return "text-3xl font-bold"
+    case "headingTwo":
+      return "text-2xl font-bold"
+    case "headingThree":
+      return "text-xl font-bold"
     default:
       return "leading-normal"
   }
