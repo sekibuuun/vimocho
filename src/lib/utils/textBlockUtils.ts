@@ -1,4 +1,5 @@
 import type { Block, BlockType } from "@/types/type"
+import type { ChangeEvent, KeyboardEvent } from "react"
 
 export const findIndexBlocks = (blocks: Block[], blockId: string): number =>
   blocks.findIndex((block) => block.id === blockId)
@@ -57,4 +58,18 @@ export const getBlockHeight = (type: BlockType): string => {
     return "min-h-[2rem]"
   }
   return "min-h-[1rem]"
+}
+
+export const handleBlockConversion = (
+  e: KeyboardEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>,
+  blockId: string,
+  blockType: BlockType,
+  updateBlockType: (blockId: string, type: BlockType) => void,
+  updateBlockContent: (blockId: string, content: string) => void,
+  focusBlockElement: (blockId: string) => void
+) => {
+  e.preventDefault()
+  updateBlockType(blockId, blockType)
+  updateBlockContent(blockId, "")
+  animateBlockFocus(blockId, focusBlockElement)
 }
