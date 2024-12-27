@@ -49,6 +49,21 @@ export const Input: React.FC = () => {
       return
     }
 
+    if (e.code === "Space" && /^#{1,3}$/.test(input.value)) {
+      const level = input.value.length
+      const headingType =
+        `heading${level === 1 ? "One" : level === 2 ? "Two" : "Three"}` as const
+      handleBlockConversion(
+        e,
+        blockId,
+        headingType,
+        updateBlockType,
+        updateBlockContent,
+        focusBlockElement
+      )
+      return
+    }
+
     if (block?.type !== "input" && input.value === "/p") {
       handleBlockConversion(
         e,
