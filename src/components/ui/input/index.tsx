@@ -1,4 +1,5 @@
 "use client"
+import { headingMap } from "@/app/const/headings"
 import { BlockElement } from "@/components/ui/input/block"
 import { useBlockElementRef } from "@/lib/hooks/useBlockElementRef"
 import { useBlocks } from "@/lib/hooks/useBlocks"
@@ -7,6 +8,7 @@ import {
   deleteBlock,
   findBlock,
   findIndexBlocks,
+  handleBlockConversion,
   scrollElementIntoView
 } from "@/lib/utils/textBlockUtils"
 import type { ChangeEvent, KeyboardEvent } from "react"
@@ -35,32 +37,27 @@ export const Input: React.FC = () => {
   ) => {
     const block = findBlock(blocks, blockId)
     const input = e.target as HTMLInputElement
-    const validTags = ["/h1", "/h2", "/h3"]
-    if (block?.type === "input" && validTags.includes(input.value)) {
-      e.preventDefault()
-      switch (input.value) {
-        case "/h1":
-          updateBlockType(blockId, "headingOne")
-          break
-        case "/h2":
-          updateBlockType(blockId, "headingTwo")
-          break
-        case "/h3":
-          updateBlockType(blockId, "headingThree")
-          break
-        default:
-          break
-      }
-      updateBlockContent(blockId, "")
-      animateBlockFocus(blockId, focusBlockElement)
+    if (block?.type === "input" && input.value in headingMap) {
+      handleBlockConversion(
+        e,
+        blockId,
+        headingMap[input.value],
+        updateBlockType,
+        updateBlockContent,
+        focusBlockElement
+      )
       return
     }
 
     if (block?.type !== "input" && input.value === "/p") {
-      e.preventDefault()
-      updateBlockType(blockId, "input")
-      updateBlockContent(blockId, "")
-      animateBlockFocus(blockId, focusBlockElement)
+      handleBlockConversion(
+        e,
+        blockId,
+        headingMap[input.value],
+        updateBlockType,
+        updateBlockContent,
+        focusBlockElement
+      )
       return
     }
 
